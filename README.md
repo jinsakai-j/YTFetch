@@ -6,12 +6,6 @@ Desktop GUI modern & ringan untuk mendownload video/audio YouTube menjadi MP4 (h
 
 ---
 
-## 📸 Preview
-
-> Tampilan aplikasi YTFetch dengan dark-mode SaaS aesthetic.
-
----
-
 ## 🚀 Fitur Utama
 
 ### 📥 Tab 1 — Downloader & Clip
