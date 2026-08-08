@@ -17,18 +17,19 @@ import imageio_ffmpeg
 # Set CustomTkinter appearance mode
 ctk.set_appearance_mode("Dark")
 
-# Custom Color Palette (Sleek Modern SaaS Theme)
-COLOR_BG = "#0F0F17"           # Deep matte black background
-COLOR_CARD_BG = "#1A1A26"      # Slightly lighter card surface
-COLOR_CARD_BORDER = "#2A2A3D"  # Subtle card border
-COLOR_ACCENT = "#00A3FF"       # Vibrant Neon Blue
-COLOR_ACCENT_HOVER = "#008BE0" 
-COLOR_SUCCESS = "#2ECC71"      # Bright Emerald Green
-COLOR_SUCCESS_HOVER = "#27AE60"
-COLOR_DANGER = "#EF4444"       # Soft Red
-COLOR_TEXT_MAIN = "#F3F4F6"    # Near white
-COLOR_TEXT_MUTED = "#888888"   # Clean muted gray
-COLOR_TEXT_DIM = "#6B7280"     # Darker gray for footer watermark
+# Premium SaaS Color Palette (Clean Dark Mode)
+COLOR_BG = "#0B0C10"           # Obsidian Deep Dark Background
+COLOR_CARD_BG = "#151722"      # Sleek Dark Slate Surface
+COLOR_CARD_BORDER = "#25283B"  # Subtle Border
+COLOR_INPUT_BG = "#0E1019"     # Deep Input Field Background
+COLOR_ACCENT = "#0084FF"       # Vibrant Royal Blue
+COLOR_ACCENT_HOVER = "#006CD4" 
+COLOR_SUCCESS = "#00C896"      # Emerald Green Accent
+COLOR_SUCCESS_HOVER = "#00A37A"
+COLOR_DANGER = "#FF4D4D"       # Soft Crimson Red
+COLOR_TEXT_MAIN = "#F0F2F8"    # Crisp White Text
+COLOR_TEXT_MUTED = "#9499B8"   # Slate Muted Gray
+COLOR_TEXT_DIM = "#5D6282"     # Subtle Subtitle / Watermark
 
 def parse_time_to_seconds(t_str):
     """Converts HH:MM:SS, MM:SS, or seconds string to float seconds."""
@@ -73,7 +74,7 @@ class YTFetchApp(ctk.CTk):
         self.title("YTFetch")
         
         # Center & set window geometry
-        self.center_window(840, 800)
+        self.center_window(840, 810)
         self.configure(fg_color=COLOR_BG)
 
         # State Variables
@@ -113,17 +114,17 @@ class YTFetchApp(ctk.CTk):
         self.geometry(f"{width}x{height}+{x}+{y}")
         self.resizable(False, False)
 
-    def generate_placeholder_thumbnail(self, width=200, height=112):
+    def generate_placeholder_thumbnail(self, width=180, height=100):
         """Generates a sleek minimalist play icon placeholder image using Pillow"""
-        img = Image.new("RGBA", (width, height), (30, 30, 46, 255))
+        img = Image.new("RGBA", (width, height), (22, 25, 38, 255))
         draw = ImageDraw.Draw(img)
         cx, cy = width // 2, height // 2
         play_points = [
-            (cx - 10, cy - 15),
-            (cx - 10, cy + 15),
-            (cx + 15, cy)
+            (cx - 8, cy - 12),
+            (cx - 8, cy + 12),
+            (cx + 12, cy)
         ]
-        draw.polygon(play_points, fill=(255, 255, 255, 70))
+        draw.polygon(play_points, fill=(255, 255, 255, 60))
         return ctk.CTkImage(light_image=img, dark_image=img, size=(width, height))
 
     def init_ui(self):
@@ -131,13 +132,13 @@ class YTFetchApp(ctk.CTk):
 
         # --- HEADER SECTION ---
         self.header_frame = ctk.CTkFrame(self, fg_color="transparent")
-        self.header_frame.grid(row=0, column=0, padx=24, pady=(18, 4), sticky="ew")
+        self.header_frame.grid(row=0, column=0, padx=24, pady=(16, 2), sticky="ew")
         self.header_frame.grid_columnconfigure(0, weight=1)
 
         self.header_title = ctk.CTkLabel(
             self.header_frame, 
-            text="YTFetch", 
-            font=ctk.CTkFont(family="Segoe UI", size=26, weight="bold"),
+            text="⚡ YTFetch", 
+            font=ctk.CTkFont(family="Segoe UI", size=24, weight="bold"),
             text_color=COLOR_TEXT_MAIN,
             anchor="w"
         )
@@ -146,25 +147,25 @@ class YTFetchApp(ctk.CTk):
         self.header_subtitle = ctk.CTkLabel(
             self.header_frame, 
             text="A clean, high-performance YouTube media utility.", 
-            font=ctk.CTkFont(family="Segoe UI", size=13),
+            font=ctk.CTkFont(family="Segoe UI", size=12),
             text_color=COLOR_TEXT_MUTED,
             anchor="w"
         )
-        self.header_subtitle.grid(row=1, column=0, sticky="w", pady=(2, 0))
+        self.header_subtitle.grid(row=1, column=0, sticky="w", pady=(1, 0))
 
         # --- TABVIEW CONTAINER (2 TABS) ---
         self.tabview = ctk.CTkTabview(
             self,
             fg_color=COLOR_CARD_BG,
-            segmented_button_fg_color="#12121E",
+            segmented_button_fg_color="#0F101A",
             segmented_button_selected_color=COLOR_ACCENT,
             segmented_button_selected_hover_color=COLOR_ACCENT_HOVER,
-            segmented_button_unselected_color="#1F1F30",
-            segmented_button_unselected_hover_color="#2A2A3D",
-            corner_radius=16,
-            height=660
+            segmented_button_unselected_color="#1A1C2B",
+            segmented_button_unselected_hover_color="#25283E",
+            corner_radius=14,
+            height=680
         )
-        self.tabview.grid(row=1, column=0, padx=24, pady=(6, 4), sticky="nsew")
+        self.tabview.grid(row=1, column=0, padx=24, pady=(4, 4), sticky="nsew")
 
         # Create 2 Tabs
         self.tab_download = self.tabview.add("📥 Downloader & Clip")
@@ -181,7 +182,7 @@ class YTFetchApp(ctk.CTk):
             font=ctk.CTkFont(family="Segoe UI", size=11, weight="bold"),
             text_color=COLOR_TEXT_DIM
         )
-        self.footer_label.grid(row=2, column=0, padx=24, pady=(4, 10))
+        self.footer_label.grid(row=2, column=0, padx=24, pady=(2, 8))
 
     def build_tab_download(self):
         self.tab_download.grid_columnconfigure(0, weight=1)
@@ -189,110 +190,111 @@ class YTFetchApp(ctk.CTk):
         # 1. URL Input Card
         self.url_card = ctk.CTkFrame(
             self.tab_download, 
-            fg_color="#141420", 
+            fg_color="#10121D", 
             border_color=COLOR_CARD_BORDER,
             border_width=1,
-            corner_radius=14
+            corner_radius=12
         )
-        self.url_card.grid(row=0, column=0, padx=12, pady=8, sticky="ew")
+        self.url_card.grid(row=0, column=0, padx=12, pady=6, sticky="ew")
         self.url_card.grid_columnconfigure(0, weight=1)
 
         self.url_entry = ctk.CTkEntry(
             self.url_card, 
             placeholder_text="Tempel URL Video / Playlist YouTube di sini... (Ctrl + V)",
             height=40,
-            corner_radius=10,
+            corner_radius=9,
             border_color=COLOR_CARD_BORDER,
-            fg_color="#10101A",
+            fg_color=COLOR_INPUT_BG,
             text_color=COLOR_TEXT_MAIN,
-            placeholder_text_color=COLOR_TEXT_MUTED,
-            font=ctk.CTkFont(family="Segoe UI", size=13)
+            placeholder_text_color=COLOR_TEXT_DIM,
+            font=ctk.CTkFont(family="Segoe UI", size=12)
         )
-        self.url_entry.grid(row=0, column=0, padx=(14, 8), pady=12, sticky="ew")
+        self.url_entry.grid(row=0, column=0, padx=(12, 8), pady=10, sticky="ew")
 
         self.fetch_btn = ctk.CTkButton(
             self.url_card,
             text="Fetch Info",
-            width=100,
+            width=95,
             height=40,
-            corner_radius=10,
-            font=ctk.CTkFont(family="Segoe UI", size=13, weight="bold"),
+            corner_radius=9,
+            font=ctk.CTkFont(family="Segoe UI", size=12, weight="bold"),
             fg_color=COLOR_ACCENT,
             hover_color=COLOR_ACCENT_HOVER,
             command=self.fetch_metadata_async
         )
-        self.fetch_btn.grid(row=0, column=1, padx=(0, 14), pady=12)
+        self.fetch_btn.grid(row=0, column=1, padx=(0, 12), pady=10)
 
         # 2. Preview Metadata Card
         self.preview_card = ctk.CTkFrame(
             self.tab_download, 
-            fg_color="#141420", 
+            fg_color="#10121D", 
             border_color=COLOR_CARD_BORDER,
             border_width=1,
-            corner_radius=14
+            corner_radius=12
         )
-        self.preview_card.grid(row=1, column=0, padx=12, pady=6, sticky="ew")
+        self.preview_card.grid(row=1, column=0, padx=12, pady=5, sticky="ew")
         self.preview_card.grid_columnconfigure(1, weight=1)
 
-        self.placeholder_img = self.generate_placeholder_thumbnail(190, 106)
+        self.placeholder_img = self.generate_placeholder_thumbnail(180, 100)
         self.thumb_label = ctk.CTkLabel(
             self.preview_card,
             text="",
             image=self.placeholder_img,
-            corner_radius=10
+            corner_radius=8
         )
-        self.thumb_label.grid(row=0, column=0, padx=12, pady=12, rowspan=3)
+        self.thumb_label.grid(row=0, column=0, padx=10, pady=10, rowspan=3)
 
         self.title_label = ctk.CTkLabel(
             self.preview_card,
             text="Siap Menerima Link Video",
-            font=ctk.CTkFont(family="Segoe UI", size=14, weight="bold"),
+            font=ctk.CTkFont(family="Segoe UI", size=13, weight="bold"),
             text_color=COLOR_TEXT_MAIN,
             anchor="w",
             wraplength=480,
             justify="left"
         )
-        self.title_label.grid(row=0, column=1, padx=(4, 12), pady=(12, 2), sticky="nw")
+        self.title_label.grid(row=0, column=1, padx=(4, 10), pady=(10, 2), sticky="nw")
 
         self.channel_label = ctk.CTkLabel(
             self.preview_card,
             text="Channel: -",
-            font=ctk.CTkFont(family="Segoe UI", size=12),
+            font=ctk.CTkFont(family="Segoe UI", size=11),
             text_color=COLOR_TEXT_MUTED,
             anchor="w"
         )
-        self.channel_label.grid(row=1, column=1, padx=(4, 12), pady=2, sticky="w")
+        self.channel_label.grid(row=1, column=1, padx=(4, 10), pady=1, sticky="w")
 
         self.duration_label = ctk.CTkLabel(
             self.preview_card,
             text="Durasi: --:--",
-            font=ctk.CTkFont(family="Segoe UI", size=12),
+            font=ctk.CTkFont(family="Segoe UI", size=11),
             text_color=COLOR_TEXT_MUTED,
             anchor="w"
         )
-        self.duration_label.grid(row=2, column=1, padx=(4, 12), pady=(2, 12), sticky="w")
+        self.duration_label.grid(row=2, column=1, padx=(4, 10), pady=(1, 10), sticky="w")
 
         # 3. Clip / Timestamp Trimmer Card
         self.trimmer_card = ctk.CTkFrame(
             self.tab_download, 
-            fg_color="#141420", 
+            fg_color="#10121D", 
             border_color=COLOR_CARD_BORDER,
             border_width=1,
-            corner_radius=14
+            corner_radius=12
         )
-        self.trimmer_card.grid(row=2, column=0, padx=12, pady=6, sticky="ew")
+        self.trimmer_card.grid(row=2, column=0, padx=12, pady=5, sticky="ew")
         self.trimmer_card.grid_columnconfigure(2, weight=1)
 
         self.trim_header_frame = ctk.CTkFrame(self.trimmer_card, fg_color="transparent")
-        self.trim_header_frame.grid(row=0, column=0, columnspan=5, padx=14, pady=(10, 4), sticky="w")
+        self.trim_header_frame.grid(row=0, column=0, columnspan=5, padx=12, pady=(8, 4), sticky="w")
 
         self.trim_checkbox = ctk.CTkCheckBox(
             self.trim_header_frame,
             text="Potong Clip (Timestamp Trimmer)",
-            font=ctk.CTkFont(family="Segoe UI", size=13, weight="bold"),
+            font=ctk.CTkFont(family="Segoe UI", size=12, weight="bold"),
             text_color=COLOR_TEXT_MAIN,
             hover_color=COLOR_ACCENT_HOVER,
             fg_color=COLOR_ACCENT,
+            corner_radius=6,
             command=self.toggle_trimmer_inputs
         )
         self.trim_checkbox.grid(row=0, column=0, sticky="w")
@@ -303,138 +305,138 @@ class YTFetchApp(ctk.CTk):
             font=ctk.CTkFont(family="Segoe UI", size=11),
             text_color=COLOR_TEXT_MUTED
         )
-        self.trim_guide_label.grid(row=0, column=1, padx=(10, 0), sticky="w")
+        self.trim_guide_label.grid(row=0, column=1, padx=(8, 0), sticky="w")
 
         self.start_label = ctk.CTkLabel(
             self.trimmer_card, 
             text="Mulai:", 
-            font=ctk.CTkFont(family="Segoe UI", size=12, weight="bold"),
+            font=ctk.CTkFont(family="Segoe UI", size=11, weight="bold"),
             text_color=COLOR_TEXT_MAIN
         )
-        self.start_label.grid(row=1, column=0, padx=(14, 4), pady=(0, 10), sticky="w")
+        self.start_label.grid(row=1, column=0, padx=(12, 4), pady=(0, 8), sticky="w")
 
         self.start_entry = ctk.CTkEntry(
             self.trimmer_card,
             placeholder_text="00:01:30 atau 01:30",
-            width=140,
+            width=135,
             height=32,
-            corner_radius=8,
-            fg_color="#10101A",
+            corner_radius=7,
+            fg_color=COLOR_INPUT_BG,
             border_color=COLOR_CARD_BORDER,
             state="disabled",
-            font=ctk.CTkFont(family="Segoe UI", size=12)
+            font=ctk.CTkFont(family="Segoe UI", size=11)
         )
-        self.start_entry.grid(row=1, column=1, padx=(0, 12), pady=(0, 10), sticky="w")
+        self.start_entry.grid(row=1, column=1, padx=(0, 10), pady=(0, 8), sticky="w")
 
         self.end_label = ctk.CTkLabel(
             self.trimmer_card, 
             text="Selesai:", 
-            font=ctk.CTkFont(family="Segoe UI", size=12, weight="bold"),
+            font=ctk.CTkFont(family="Segoe UI", size=11, weight="bold"),
             text_color=COLOR_TEXT_MAIN
         )
-        self.end_label.grid(row=1, column=2, padx=(8, 4), pady=(0, 10), sticky="w")
+        self.end_label.grid(row=1, column=2, padx=(8, 4), pady=(0, 8), sticky="w")
 
         self.end_entry = ctk.CTkEntry(
             self.trimmer_card,
             placeholder_text="00:03:45 atau 03:45",
-            width=140,
+            width=135,
             height=32,
-            corner_radius=8,
-            fg_color="#10101A",
+            corner_radius=7,
+            fg_color=COLOR_INPUT_BG,
             border_color=COLOR_CARD_BORDER,
             state="disabled",
-            font=ctk.CTkFont(family="Segoe UI", size=12)
+            font=ctk.CTkFont(family="Segoe UI", size=11)
         )
-        self.end_entry.grid(row=1, column=3, padx=(0, 14), pady=(0, 10), sticky="w")
+        self.end_entry.grid(row=1, column=3, padx=(0, 12), pady=(0, 8), sticky="w")
 
-        # 4. Format & Folder Options
+        # 4. Format & Folder Options Card
         self.options_card = ctk.CTkFrame(
             self.tab_download, 
-            fg_color="#141420", 
+            fg_color="#10121D", 
             border_color=COLOR_CARD_BORDER,
             border_width=1,
-            corner_radius=14
+            corner_radius=12
         )
-        self.options_card.grid(row=3, column=0, padx=12, pady=6, sticky="ew")
+        self.options_card.grid(row=3, column=0, padx=12, pady=5, sticky="ew")
         self.options_card.grid_columnconfigure((0, 1), weight=1)
 
         self.format_label = ctk.CTkLabel(
             self.options_card, 
             text="Format Output", 
-            font=ctk.CTkFont(family="Segoe UI", size=12, weight="bold"),
+            font=ctk.CTkFont(family="Segoe UI", size=11, weight="bold"),
             text_color=COLOR_TEXT_MAIN
         )
-        self.format_label.grid(row=0, column=0, padx=14, pady=(8, 2), sticky="w")
+        self.format_label.grid(row=0, column=0, padx=12, pady=(6, 2), sticky="w")
 
         self.format_option = ctk.CTkOptionMenu(
             self.options_card,
-            values=["Video (MP4)", "Audio (MP3)"],
+            values=["Video (MP4)", "Audio (MP3)", "Audio (M4A / AAC)", "Audio (WAV Lossless)"],
             command=self.on_format_change,
             height=34,
-            corner_radius=8,
-            fg_color="#10101A",
+            corner_radius=7,
+            fg_color=COLOR_INPUT_BG,
             button_color=COLOR_CARD_BORDER,
-            button_hover_color="#32324A",
-            font=ctk.CTkFont(family="Segoe UI", size=12)
+            button_hover_color="#2A2E47",
+            font=ctk.CTkFont(family="Segoe UI", size=11)
         )
         self.format_option.set("Video (MP4)")
-        self.format_option.grid(row=1, column=0, padx=14, pady=(0, 10), sticky="ew")
+        self.format_option.grid(row=1, column=0, padx=12, pady=(0, 8), sticky="ew")
 
         self.quality_label = ctk.CTkLabel(
             self.options_card, 
             text="Kualitas / Bitrate", 
-            font=ctk.CTkFont(family="Segoe UI", size=12, weight="bold"),
+            font=ctk.CTkFont(family="Segoe UI", size=11, weight="bold"),
             text_color=COLOR_TEXT_MAIN
         )
-        self.quality_label.grid(row=0, column=1, padx=14, pady=(8, 2), sticky="w")
+        self.quality_label.grid(row=0, column=1, padx=12, pady=(6, 2), sticky="w")
 
         self.quality_option = ctk.CTkOptionMenu(
             self.options_card,
             values=["1080p (FHD)", "720p (HD)", "480p"],
             height=34,
-            corner_radius=8,
-            fg_color="#10101A",
+            corner_radius=7,
+            fg_color=COLOR_INPUT_BG,
             button_color=COLOR_CARD_BORDER,
-            button_hover_color="#32324A",
-            font=ctk.CTkFont(family="Segoe UI", size=12)
+            button_hover_color="#2A2E47",
+            font=ctk.CTkFont(family="Segoe UI", size=11)
         )
         self.quality_option.set("1080p (FHD)")
-        self.quality_option.grid(row=1, column=1, padx=14, pady=(0, 10), sticky="ew")
+        self.quality_option.grid(row=1, column=1, padx=12, pady=(0, 8), sticky="ew")
 
         # Folder Selection Row
         self.folder_label = ctk.CTkLabel(
             self.options_card, 
             text="Folder Penyimpanan", 
-            font=ctk.CTkFont(family="Segoe UI", size=12, weight="bold"),
+            font=ctk.CTkFont(family="Segoe UI", size=11, weight="bold"),
             text_color=COLOR_TEXT_MAIN
         )
-        self.folder_label.grid(row=2, column=0, padx=14, pady=(4, 2), sticky="w")
+        self.folder_label.grid(row=2, column=0, padx=12, pady=(2, 2), sticky="w")
 
         self.folder_entry = ctk.CTkEntry(
             self.options_card,
             height=34,
-            corner_radius=8,
+            corner_radius=7,
             border_color=COLOR_CARD_BORDER,
-            fg_color="#10101A",
+            fg_color=COLOR_INPUT_BG,
             text_color=COLOR_TEXT_MAIN,
-            font=ctk.CTkFont(family="Segoe UI", size=12)
+            font=ctk.CTkFont(family="Segoe UI", size=11)
         )
         self.folder_entry.insert(0, self.default_download_dir)
-        self.folder_entry.grid(row=3, column=0, padx=(14, 6), pady=(0, 10), sticky="ew")
+        self.folder_entry.grid(row=3, column=0, padx=(12, 6), pady=(0, 8), sticky="ew")
 
         self.folder_btn_frame = ctk.CTkFrame(self.options_card, fg_color="transparent")
-        self.folder_btn_frame.grid(row=3, column=1, padx=(0, 14), pady=(0, 10), sticky="e")
+        self.folder_btn_frame.grid(row=3, column=1, padx=(0, 12), pady=(0, 8), sticky="e")
 
         self.browse_btn = ctk.CTkButton(
             self.folder_btn_frame,
             text="Pilih Folder",
-            width=90,
+            width=85,
             height=34,
-            corner_radius=8,
-            fg_color="#252538",
-            hover_color="#32324A",
+            corner_radius=7,
+            fg_color="#202336",
+            hover_color="#2C304B",
             text_color=COLOR_TEXT_MAIN,
-            font=ctk.CTkFont(family="Segoe UI", size=12),
+            font=ctk.CTkFont(family="Segoe UI", size=11),
             command=self.browse_folder
         )
         self.browse_btn.grid(row=0, column=0, padx=(0, 6))
@@ -442,46 +444,46 @@ class YTFetchApp(ctk.CTk):
         self.open_folder_btn = ctk.CTkButton(
             self.folder_btn_frame,
             text="Buka (Ctrl+O)",
-            width=100,
+            width=95,
             height=34,
-            corner_radius=8,
-            fg_color="#252538",
-            hover_color="#32324A",
+            corner_radius=7,
+            fg_color="#202336",
+            hover_color="#2C304B",
             text_color=COLOR_TEXT_MAIN,
-            font=ctk.CTkFont(family="Segoe UI", size=12),
+            font=ctk.CTkFont(family="Segoe UI", size=11),
             command=self.open_output_folder
         )
         self.open_folder_btn.grid(row=0, column=1)
 
         # 5. Action & Progress Area
         self.action_frame = ctk.CTkFrame(self.tab_download, fg_color="transparent")
-        self.action_frame.grid(row=4, column=0, padx=12, pady=(6, 4), sticky="ew")
+        self.action_frame.grid(row=4, column=0, padx=12, pady=(4, 2), sticky="ew")
         self.action_frame.grid_columnconfigure(0, weight=1)
 
         self.download_btn = ctk.CTkButton(
             self.action_frame,
             text="Download (Enter)",
-            font=ctk.CTkFont(family="Segoe UI", size=14, weight="bold"),
-            height=44,
-            corner_radius=12,
+            font=ctk.CTkFont(family="Segoe UI", size=13, weight="bold"),
+            height=42,
+            corner_radius=10,
             fg_color=COLOR_SUCCESS,
             hover_color=COLOR_SUCCESS_HOVER,
             command=self.start_download
         )
-        self.download_btn.grid(row=0, column=0, padx=(0, 8), sticky="ew")
+        self.download_btn.grid(row=0, column=0, padx=(0, 6), sticky="ew")
 
         self.cancel_btn = ctk.CTkButton(
             self.action_frame,
             text="Batal (Esc)",
-            font=ctk.CTkFont(family="Segoe UI", size=12, weight="bold"),
-            height=44,
-            width=90,
-            corner_radius=12,
+            font=ctk.CTkFont(family="Segoe UI", size=11, weight="bold"),
+            height=42,
+            width=85,
+            corner_radius=10,
             fg_color="transparent",
             border_width=2,
             border_color=COLOR_DANGER,
             text_color=COLOR_DANGER,
-            hover_color="#2C1618",
+            hover_color="#281418",
             state="disabled",
             command=self.cancel_download
         )
@@ -489,13 +491,13 @@ class YTFetchApp(ctk.CTk):
 
         self.progress_bar = ctk.CTkProgressBar(
             self.action_frame, 
-            height=8,
+            height=7,
             corner_radius=4,
             progress_color=COLOR_ACCENT,
-            fg_color="#1F1F30"
+            fg_color="#181B2B"
         )
         self.progress_bar.set(0)
-        self.progress_bar.grid(row=1, column=0, columnspan=2, pady=(10, 4), sticky="ew")
+        self.progress_bar.grid(row=1, column=0, columnspan=2, pady=(8, 3), sticky="ew")
 
         self.status_label = ctk.CTkLabel(
             self.action_frame,
@@ -508,78 +510,78 @@ class YTFetchApp(ctk.CTk):
         # 6. Download Result Card (Hidden until download finishes)
         self.result_card = ctk.CTkFrame(
             self.tab_download, 
-            fg_color="#141420", 
+            fg_color="#10121D", 
             border_color=COLOR_CARD_BORDER,
             border_width=1,
-            corner_radius=14
+            corner_radius=12
         )
         self.result_card.grid_columnconfigure(0, weight=1)
 
         self.result_title = ctk.CTkLabel(
             self.result_card,
             text="🎉 Hasil Download Terbaru",
-            font=ctk.CTkFont(family="Segoe UI", size=13, weight="bold"),
+            font=ctk.CTkFont(family="Segoe UI", size=12, weight="bold"),
             text_color=COLOR_SUCCESS,
             anchor="w"
         )
-        self.result_title.grid(row=0, column=0, columnspan=2, padx=14, pady=(8, 2), sticky="w")
+        self.result_title.grid(row=0, column=0, columnspan=2, padx=12, pady=(6, 2), sticky="w")
 
         self.file_info_label = ctk.CTkLabel(
             self.result_card,
             text="Belum ada file yang didownload",
-            font=ctk.CTkFont(family="Segoe UI", size=12),
+            font=ctk.CTkFont(family="Segoe UI", size=11),
             text_color=COLOR_TEXT_MAIN,
             anchor="w"
         )
-        self.file_info_label.grid(row=1, column=0, columnspan=2, padx=14, pady=(0, 6), sticky="w")
+        self.file_info_label.grid(row=1, column=0, columnspan=2, padx=12, pady=(0, 4), sticky="w")
 
         self.locate_file_btn = ctk.CTkButton(
             self.result_card,
             text="📁 Buka Lokasi File (Ctrl+O)",
-            width=180,
-            height=34,
-            corner_radius=8,
+            width=170,
+            height=32,
+            corner_radius=7,
             fg_color=COLOR_ACCENT,
             hover_color=COLOR_ACCENT_HOVER,
-            font=ctk.CTkFont(family="Segoe UI", size=12, weight="bold"),
+            font=ctk.CTkFont(family="Segoe UI", size=11, weight="bold"),
             command=self.locate_downloaded_file
         )
-        self.locate_file_btn.grid(row=2, column=0, padx=14, pady=(0, 10), sticky="w")
+        self.locate_file_btn.grid(row=2, column=0, padx=12, pady=(0, 8), sticky="w")
 
     def build_tab_playlist(self):
         self.tab_playlist.grid_columnconfigure(0, weight=1)
 
         self.playlist_card = ctk.CTkFrame(
             self.tab_playlist, 
-            fg_color="#141420", 
+            fg_color="#10121D", 
             border_color=COLOR_CARD_BORDER,
             border_width=1,
-            corner_radius=14
+            corner_radius=12
         )
-        self.playlist_card.grid(row=0, column=0, padx=12, pady=10, sticky="ew")
+        self.playlist_card.grid(row=0, column=0, padx=12, pady=8, sticky="ew")
         self.playlist_card.grid_columnconfigure(0, weight=1)
 
         self.playlist_count_label = ctk.CTkLabel(
             self.playlist_card, 
             text="📋 Belum ada playlist yang dimuat. Masukkan URL playlist di Tab Downloader lalu klik Fetch Info.", 
-            font=ctk.CTkFont(family="Segoe UI", size=13, weight="bold"),
+            font=ctk.CTkFont(family="Segoe UI", size=12, weight="bold"),
             text_color=COLOR_TEXT_MUTED,
             wraplength=700
         )
-        self.playlist_count_label.grid(row=0, column=0, padx=14, pady=12, sticky="w")
+        self.playlist_count_label.grid(row=0, column=0, padx=12, pady=10, sticky="w")
 
         self.playlist_btns_frame = ctk.CTkFrame(self.playlist_card, fg_color="transparent")
-        self.playlist_btns_frame.grid(row=1, column=0, padx=14, pady=(0, 8), sticky="e")
+        self.playlist_btns_frame.grid(row=1, column=0, padx=12, pady=(0, 6), sticky="e")
 
         self.select_all_btn = ctk.CTkButton(
             self.playlist_btns_frame,
             text="Select All",
-            width=85,
-            height=30,
-            corner_radius=8,
-            fg_color="#252538",
-            hover_color="#32324A",
-            font=ctk.CTkFont(family="Segoe UI", size=12),
+            width=80,
+            height=28,
+            corner_radius=7,
+            fg_color="#202336",
+            hover_color="#2C304B",
+            font=ctk.CTkFont(family="Segoe UI", size=11),
             command=self.select_all_playlist
         )
         self.select_all_btn.grid(row=0, column=0, padx=(0, 6))
@@ -587,12 +589,12 @@ class YTFetchApp(ctk.CTk):
         self.deselect_all_btn = ctk.CTkButton(
             self.playlist_btns_frame,
             text="Deselect All",
-            width=95,
-            height=30,
-            corner_radius=8,
-            fg_color="#252538",
-            hover_color="#32324A",
-            font=ctk.CTkFont(family="Segoe UI", size=12),
+            width=90,
+            height=28,
+            corner_radius=7,
+            fg_color="#202336",
+            hover_color="#2C304B",
+            font=ctk.CTkFont(family="Segoe UI", size=11),
             command=self.deselect_all_playlist
         )
         self.deselect_all_btn.grid(row=0, column=1)
@@ -600,26 +602,26 @@ class YTFetchApp(ctk.CTk):
         self.playlist_scrollable = ctk.CTkScrollableFrame(
             self.tab_playlist,
             height=380,
-            corner_radius=12,
-            fg_color="#10101A",
+            corner_radius=10,
+            fg_color=COLOR_INPUT_BG,
             border_color=COLOR_CARD_BORDER,
             border_width=1
         )
-        self.playlist_scrollable.grid(row=1, column=0, padx=12, pady=6, sticky="ew")
+        self.playlist_scrollable.grid(row=1, column=0, padx=12, pady=5, sticky="ew")
         self.playlist_scrollable.grid_columnconfigure(0, weight=1)
 
         # Batch Download Button for Playlist Tab
         self.playlist_download_btn = ctk.CTkButton(
             self.tab_playlist,
             text="Download Video Terpilih",
-            font=ctk.CTkFont(family="Segoe UI", size=14, weight="bold"),
-            height=42,
-            corner_radius=12,
+            font=ctk.CTkFont(family="Segoe UI", size=13, weight="bold"),
+            height=40,
+            corner_radius=10,
             fg_color=COLOR_SUCCESS,
             hover_color=COLOR_SUCCESS_HOVER,
             command=self.start_download
         )
-        self.playlist_download_btn.grid(row=2, column=0, padx=12, pady=12, sticky="ew")
+        self.playlist_download_btn.grid(row=2, column=0, padx=12, pady=10, sticky="ew")
 
     # --- SHORTCUTS & OTHER LISTENERS ---
 
@@ -656,9 +658,16 @@ class YTFetchApp(ctk.CTk):
             pass
 
     def on_format_change(self, choice):
-        if choice == "Audio (MP3)":
-            self.quality_option.configure(values=["320kbps", "128kbps"])
-            self.quality_option.set("320kbps")
+        if "Audio" in choice:
+            if choice == "Audio (MP3)":
+                self.quality_option.configure(values=["320kbps", "256kbps", "128kbps"])
+                self.quality_option.set("320kbps")
+            elif choice == "Audio (M4A / AAC)":
+                self.quality_option.configure(values=["Best Native Quality"])
+                self.quality_option.set("Best Native Quality")
+            elif choice == "Audio (WAV Lossless)":
+                self.quality_option.configure(values=["Lossless WAV"])
+                self.quality_option.set("Lossless WAV")
             self.download_btn.configure(text="Download Audio (Enter)")
         else:
             self.quality_option.configure(values=["1080p (FHD)", "720p (HD)", "480p"])
@@ -718,8 +727,8 @@ class YTFetchApp(ctk.CTk):
                         if res.status_code == 200:
                             image_bytes = io.BytesIO(res.content)
                             pil_img = Image.open(image_bytes)
-                            pil_img = pil_img.resize((190, 106), Image.Resampling.LANCZOS)
-                            img_obj = ctk.CTkImage(light_image=pil_img, dark_image=pil_img, size=(190, 106))
+                            pil_img = pil_img.resize((180, 100), Image.Resampling.LANCZOS)
+                            img_obj = ctk.CTkImage(light_image=pil_img, dark_image=pil_img, size=(180, 100))
 
                     self.after(0, self._update_single_ui, title, channel, duration_str, img_obj, duration_sec)
         except Exception as e:
@@ -761,13 +770,14 @@ class YTFetchApp(ctk.CTk):
             cb = ctk.CTkCheckBox(
                 self.playlist_scrollable,
                 text=f"{idx}. {item_title} [{dur_str}]",
-                font=ctk.CTkFont(family="Segoe UI", size=12),
+                font=ctk.CTkFont(family="Segoe UI", size=11),
                 text_color=COLOR_TEXT_MAIN,
                 fg_color=COLOR_ACCENT,
-                hover_color=COLOR_ACCENT_HOVER
+                hover_color=COLOR_ACCENT_HOVER,
+                corner_radius=5
             )
             cb.select()
-            cb.grid(row=idx, column=0, padx=8, pady=4, sticky="w")
+            cb.grid(row=idx, column=0, padx=8, pady=3, sticky="w")
             self.playlist_checkboxes.append(cb)
 
         self.status_label.configure(text=f"Status: Playlist terdeteksi ({len(entries)} video)", text_color=COLOR_SUCCESS)
@@ -942,15 +952,35 @@ class YTFetchApp(ctk.CTk):
                 ydl_opts['outtmpl'] = temp_output
 
             # Format Choice
-            if fmt_choice == "Audio (MP3)":
-                bitrate = "320" if "320" in quality_choice else "128"
+            if "Audio" in fmt_choice:
+                audio_codec = 'mp3'
+                bitrate = '320'
+                if "MP3" in fmt_choice:
+                    audio_codec = 'mp3'
+                    if "320" in quality_choice:
+                        bitrate = "320"
+                    elif "256" in quality_choice:
+                        bitrate = "256"
+                    else:
+                        bitrate = "128"
+                elif "M4A" in fmt_choice:
+                    audio_codec = 'm4a'
+                elif "WAV" in fmt_choice:
+                    audio_codec = 'wav'
+
+                postprocessors = [{
+                    'key': 'FFmpegExtractAudio',
+                    'preferredcodec': audio_codec,
+                    'preferredquality': bitrate if audio_codec == 'mp3' else None,
+                }, {
+                    'key': 'FFmpegMetadata',
+                    'add_metadata': True,
+                }]
+
                 ydl_opts.update({
                     'format': 'bestaudio/best',
-                    'postprocessors': [{
-                        'key': 'FFmpegExtractAudio',
-                        'preferredcodec': 'mp3',
-                        'preferredquality': bitrate,
-                    }],
+                    'writethumbnail': True,
+                    'postprocessors': postprocessors,
                 })
             else:
                 if "1080p" in quality_choice:
