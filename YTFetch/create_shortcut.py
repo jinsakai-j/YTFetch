@@ -38,7 +38,9 @@ def create_desktop_shortcut():
     current_dir = os.path.dirname(os.path.abspath(__file__))
     target_path = os.path.join(current_dir, "Run_YTFetch.bat")
     
-    icon_path = os.path.join(current_dir, "icon.ico")
+    icon_path = os.path.join(current_dir, "assets", "ytfetch_icon.ico")
+    if not os.path.exists(icon_path):
+        icon_path = os.path.join(current_dir, "icon.ico")
     has_icon = os.path.exists(icon_path)
 
     desktop_paths = get_active_desktop_paths()

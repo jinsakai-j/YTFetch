@@ -70,6 +70,14 @@ class YTFetchApp(ctk.CTk):
     def __init__(self):
         super().__init__()
 
+        # Window Icon (taskbar)
+        _icon_path = os.path.join(os.path.dirname(os.path.abspath(__file__)), "assets", "ytfetch_icon.ico")
+        if os.path.exists(_icon_path):
+            try:
+                self.iconbitmap(_icon_path)
+            except Exception:
+                pass
+
         # Window Title Bar
         self.title("YTFetch")
         
