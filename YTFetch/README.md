@@ -68,7 +68,7 @@ Desktop GUI modern & ringan untuk mendownload video/audio YouTube menjadi MP4 (h
 
 1. **Clone repositori**:
    ```bash
-   git clone https://github.com/USERNAME/YTFetch.git
+   git clone https://github.com/jinsakai-j/YTFetch.git
    cd YTFetch
    ```
 
@@ -86,6 +86,32 @@ Desktop GUI modern & ringan untuk mendownload video/audio YouTube menjadi MP4 (h
    ```bash
    python create_shortcut.py
    ```
+
+---
+
+### 🐧 Instalasi di Linux (Ubuntu / Debian)
+
+1. **Syarat & Clone**:
+   ```bash
+   sudo apt update && sudo apt install -y git python3 python3-pip python3-tk
+   git clone https://github.com/jinsakai-j/YTFetch.git
+   cd YTFetch
+   ```
+
+2. **Install dependencies** (`pywin32` khusus Windows — di Linux gunakan perintah ini supaya tidak error):
+   ```bash
+   python3 -m pip install customtkinter yt-dlp Pillow requests imageio-ffmpeg sounddevice numpy
+   ```
+
+3. **Jalankan aplikasi**:
+   ```bash
+   python3 YTFetch.py
+   ```
+
+> Catatan Linux:
+> - `setup_env.bat`, `Run_YTFetch.bat`, dan `create_shortcut.py` khusus **Windows** (memakai pywin32). Di Linux cukup jalankan `python3 YTFetch.py`.
+> - FFmpeg disediakan otomatis oleh `imageio-ffmpeg` (lintas platform).
+> - Fitur *Clip Trimming* dan *Audio WAV* butuh `sounddevice`/ffmpeg — keduanya sudah masuk perintah di atas.
 
 ---
 
