@@ -17,19 +17,21 @@ import imageio_ffmpeg
 # Set CustomTkinter appearance mode
 ctk.set_appearance_mode("Dark")
 
-# Premium SaaS Color Palette (Clean Dark Mode)
-COLOR_BG = "#0B0C10"           # Obsidian Deep Dark Background
-COLOR_CARD_BG = "#151722"      # Sleek Dark Slate Surface
-COLOR_CARD_BORDER = "#25283B"  # Subtle Border
-COLOR_INPUT_BG = "#0E1019"     # Deep Input Field Background
-COLOR_ACCENT = "#0084FF"       # Vibrant Royal Blue
-COLOR_ACCENT_HOVER = "#006CD4" 
-COLOR_SUCCESS = "#00C896"      # Emerald Green Accent
-COLOR_SUCCESS_HOVER = "#00A37A"
-COLOR_DANGER = "#FF4D4D"       # Soft Crimson Red
-COLOR_TEXT_MAIN = "#F0F2F8"    # Crisp White Text
-COLOR_TEXT_MUTED = "#9499B8"   # Slate Muted Gray
-COLOR_TEXT_DIM = "#5D6282"     # Subtle Subtitle / Watermark
+# Premium Color Palette (Refined Dark Mode)
+COLOR_BG = "#0E1117"           # App background
+COLOR_CARD_BG = "#151B23"      # Tab surface
+COLOR_CARD_BORDER = "#2A313C"  # Subtle border
+COLOR_INPUT_BG = "#0D1117"     # Input fill
+COLOR_ACCENT = "#4C8DFF"       # Calm blue accent
+COLOR_ACCENT_HOVER = "#3A76E8"
+COLOR_SUCCESS = "#3FB950"      # Muted green accent
+COLOR_SUCCESS_HOVER = "#2EA043"
+COLOR_DANGER = "#F85149"       # Softer red accent
+COLOR_TEXT_MAIN = "#E6EDF3"    # Primary text
+COLOR_TEXT_MUTED = "#8B949E"   # Secondary text
+COLOR_TEXT_DIM = "#6E7681"     # Subtitle / watermark
+SURFACE = "#21262D"            # Secondary button fill
+SURFACE_HOVER = "#30363D"
 
 def parse_time_to_seconds(t_str):
     """Converts HH:MM:SS, MM:SS, or seconds string to float seconds."""
@@ -68,6 +70,12 @@ def seconds_to_hhmmss(seconds):
 
 class YTFetchApp(ctk.CTk):
     def __init__(self):
+        try:
+            import ctypes
+            ctypes.windll.shell32.SetCurrentProcessExplicitAppUserModelID("JinsakaiCorp.YTFetch.1")
+        except Exception:
+            pass
+
         super().__init__()
 
         # Window Icon (taskbar)
@@ -124,7 +132,7 @@ class YTFetchApp(ctk.CTk):
 
     def generate_placeholder_thumbnail(self, width=180, height=100):
         """Generates a sleek minimalist play icon placeholder image using Pillow"""
-        img = Image.new("RGBA", (width, height), (22, 25, 38, 255))
+        img = Image.new("RGBA", (width, height), (13, 17, 23, 255))
         draw = ImageDraw.Draw(img)
         cx, cy = width // 2, height // 2
         play_points = [
@@ -145,7 +153,7 @@ class YTFetchApp(ctk.CTk):
 
         self.header_title = ctk.CTkLabel(
             self.header_frame, 
-            text="⚡ YTFetch", 
+            text="YTFetch", 
             font=ctk.CTkFont(family="Segoe UI", size=24, weight="bold"),
             text_color=COLOR_TEXT_MAIN,
             anchor="w"
@@ -165,19 +173,19 @@ class YTFetchApp(ctk.CTk):
         self.tabview = ctk.CTkTabview(
             self,
             fg_color=COLOR_CARD_BG,
-            segmented_button_fg_color="#0F101A",
+            segmented_button_fg_color="#11151D",
             segmented_button_selected_color=COLOR_ACCENT,
             segmented_button_selected_hover_color=COLOR_ACCENT_HOVER,
-            segmented_button_unselected_color="#1A1C2B",
-            segmented_button_unselected_hover_color="#25283E",
+            segmented_button_unselected_color="#1B2230",
+            segmented_button_unselected_hover_color="#283247",
             corner_radius=14,
             height=680
         )
         self.tabview.grid(row=1, column=0, padx=24, pady=(4, 4), sticky="nsew")
 
         # Create 2 Tabs
-        self.tab_download = self.tabview.add("📥 Downloader & Clip")
-        self.tab_playlist = self.tabview.add("📋 Playlist Manager")
+        self.tab_download = self.tabview.add("Downloader & Clip")
+        self.tab_playlist = self.tabview.add("Playlist Manager")
 
         # Build UI for 2 tabs
         self.build_tab_download()
@@ -198,7 +206,7 @@ class YTFetchApp(ctk.CTk):
         # 1. URL Input Card
         self.url_card = ctk.CTkFrame(
             self.tab_download, 
-            fg_color="#10121D", 
+            fg_color="#151B23", 
             border_color=COLOR_CARD_BORDER,
             border_width=1,
             corner_radius=12
@@ -235,7 +243,7 @@ class YTFetchApp(ctk.CTk):
         # 2. Preview Metadata Card
         self.preview_card = ctk.CTkFrame(
             self.tab_download, 
-            fg_color="#10121D", 
+            fg_color="#151B23", 
             border_color=COLOR_CARD_BORDER,
             border_width=1,
             corner_radius=12
@@ -284,7 +292,7 @@ class YTFetchApp(ctk.CTk):
         # 3. Clip / Timestamp Trimmer Card
         self.trimmer_card = ctk.CTkFrame(
             self.tab_download, 
-            fg_color="#10121D", 
+            fg_color="#151B23", 
             border_color=COLOR_CARD_BORDER,
             border_width=1,
             corner_radius=12
@@ -360,7 +368,7 @@ class YTFetchApp(ctk.CTk):
         # 4. Format & Folder Options Card
         self.options_card = ctk.CTkFrame(
             self.tab_download, 
-            fg_color="#10121D", 
+            fg_color="#151B23", 
             border_color=COLOR_CARD_BORDER,
             border_width=1,
             corner_radius=12
@@ -384,7 +392,7 @@ class YTFetchApp(ctk.CTk):
             corner_radius=7,
             fg_color=COLOR_INPUT_BG,
             button_color=COLOR_CARD_BORDER,
-            button_hover_color="#2A2E47",
+            button_hover_color=SURFACE_HOVER,
             font=ctk.CTkFont(family="Segoe UI", size=11)
         )
         self.format_option.set("Video (MP4)")
@@ -405,7 +413,7 @@ class YTFetchApp(ctk.CTk):
             corner_radius=7,
             fg_color=COLOR_INPUT_BG,
             button_color=COLOR_CARD_BORDER,
-            button_hover_color="#2A2E47",
+            button_hover_color=SURFACE_HOVER,
             font=ctk.CTkFont(family="Segoe UI", size=11)
         )
         self.quality_option.set("1080p (FHD)")
@@ -441,8 +449,8 @@ class YTFetchApp(ctk.CTk):
             width=85,
             height=34,
             corner_radius=7,
-            fg_color="#202336",
-            hover_color="#2C304B",
+            fg_color=SURFACE,
+            hover_color=SURFACE_HOVER,
             text_color=COLOR_TEXT_MAIN,
             font=ctk.CTkFont(family="Segoe UI", size=11),
             command=self.browse_folder
@@ -455,8 +463,8 @@ class YTFetchApp(ctk.CTk):
             width=95,
             height=34,
             corner_radius=7,
-            fg_color="#202336",
-            hover_color="#2C304B",
+            fg_color=SURFACE,
+            hover_color=SURFACE_HOVER,
             text_color=COLOR_TEXT_MAIN,
             font=ctk.CTkFont(family="Segoe UI", size=11),
             command=self.open_output_folder
@@ -487,11 +495,9 @@ class YTFetchApp(ctk.CTk):
             height=42,
             width=85,
             corner_radius=10,
-            fg_color="transparent",
-            border_width=2,
-            border_color=COLOR_DANGER,
+            fg_color=SURFACE,
+            hover_color=SURFACE_HOVER,
             text_color=COLOR_DANGER,
-            hover_color="#281418",
             state="disabled",
             command=self.cancel_download
         )
@@ -502,7 +508,7 @@ class YTFetchApp(ctk.CTk):
             height=7,
             corner_radius=4,
             progress_color=COLOR_ACCENT,
-            fg_color="#181B2B"
+            fg_color="#21262D"
         )
         self.progress_bar.set(0)
         self.progress_bar.grid(row=1, column=0, columnspan=2, pady=(8, 3), sticky="ew")
@@ -518,7 +524,7 @@ class YTFetchApp(ctk.CTk):
         # 6. Download Result Card (Hidden until download finishes)
         self.result_card = ctk.CTkFrame(
             self.tab_download, 
-            fg_color="#10121D", 
+            fg_color="#151B23", 
             border_color=COLOR_CARD_BORDER,
             border_width=1,
             corner_radius=12
@@ -527,7 +533,7 @@ class YTFetchApp(ctk.CTk):
 
         self.result_title = ctk.CTkLabel(
             self.result_card,
-            text="🎉 Hasil Download Terbaru",
+            text="Hasil Download Terbaru",
             font=ctk.CTkFont(family="Segoe UI", size=12, weight="bold"),
             text_color=COLOR_SUCCESS,
             anchor="w"
@@ -545,7 +551,7 @@ class YTFetchApp(ctk.CTk):
 
         self.locate_file_btn = ctk.CTkButton(
             self.result_card,
-            text="📁 Buka Lokasi File (Ctrl+O)",
+            text="Buka Lokasi File (Ctrl+O)",
             width=170,
             height=32,
             corner_radius=7,
@@ -561,7 +567,7 @@ class YTFetchApp(ctk.CTk):
 
         self.playlist_card = ctk.CTkFrame(
             self.tab_playlist, 
-            fg_color="#10121D", 
+            fg_color="#151B23", 
             border_color=COLOR_CARD_BORDER,
             border_width=1,
             corner_radius=12
@@ -571,7 +577,7 @@ class YTFetchApp(ctk.CTk):
 
         self.playlist_count_label = ctk.CTkLabel(
             self.playlist_card, 
-            text="📋 Belum ada playlist yang dimuat. Masukkan URL playlist di Tab Downloader lalu klik Fetch Info.", 
+            text="Belum ada playlist yang dimuat. Masukkan URL playlist di Tab Downloader lalu klik Fetch Info.", 
             font=ctk.CTkFont(family="Segoe UI", size=12, weight="bold"),
             text_color=COLOR_TEXT_MUTED,
             wraplength=700
@@ -587,8 +593,8 @@ class YTFetchApp(ctk.CTk):
             width=80,
             height=28,
             corner_radius=7,
-            fg_color="#202336",
-            hover_color="#2C304B",
+            fg_color=SURFACE,
+            hover_color=SURFACE_HOVER,
             font=ctk.CTkFont(family="Segoe UI", size=11),
             command=self.select_all_playlist
         )
@@ -600,8 +606,8 @@ class YTFetchApp(ctk.CTk):
             width=90,
             height=28,
             corner_radius=7,
-            fg_color="#202336",
-            hover_color="#2C304B",
+            fg_color=SURFACE,
+            hover_color=SURFACE_HOVER,
             font=ctk.CTkFont(family="Segoe UI", size=11),
             command=self.deselect_all_playlist
         )
@@ -697,7 +703,7 @@ class YTFetchApp(ctk.CTk):
     def fetch_metadata_async(self):
         url = self.url_entry.get().strip()
         if not url:
-            self.status_label.configure(text="Status: Masukkan URL YouTube terlebih dahulu!", text_color="#F59E0B")
+            self.status_label.configure(text="Status: Masukkan URL YouTube terlebih dahulu!", text_color="#D29922")
             return
 
         self.status_label.configure(text="Status: Mengambil metadata (single/playlist)...", text_color=COLOR_ACCENT)
@@ -762,7 +768,7 @@ class YTFetchApp(ctk.CTk):
         self.current_video_duration_sec = 0
         self.playlist_entries = entries
 
-        self.playlist_count_label.configure(text=f"📋 {playlist_title} ({len(entries)} Video)")
+        self.playlist_count_label.configure(text=f"{playlist_title} ({len(entries)} Video)")
 
         # Clear scrollable frame children
         for widget in self.playlist_scrollable.winfo_children():
@@ -792,7 +798,7 @@ class YTFetchApp(ctk.CTk):
         self.fetch_btn.configure(state="normal")
         
         # Automatically focus to playlist tab
-        self.tabview.set("📋 Playlist Manager")
+        self.tabview.set("Playlist Manager")
 
     def _on_fetch_error(self, err):
         self.status_label.configure(text=f"Status: Gagal mengambil metadata ({err[:45]}...)", text_color=COLOR_DANGER)
@@ -881,7 +887,7 @@ class YTFetchApp(ctk.CTk):
     def cancel_download(self):
         if self.is_downloading:
             self.cancel_requested = True
-            self.status_label.configure(text="Status: Membatalkan download...", text_color="#F59E0B")
+            self.status_label.configure(text="Status: Membatalkan download...", text_color="#D29922")
 
     def _download_progress_hook(self, d):
         if self.cancel_requested:
@@ -1074,10 +1080,10 @@ class YTFetchApp(ctk.CTk):
             if self.last_downloaded_file and os.path.exists(self.last_downloaded_file):
                 filename = os.path.basename(self.last_downloaded_file)
                 file_size_mb = os.path.getsize(self.last_downloaded_file) / (1024 * 1024)
-                self.file_info_label.configure(text=f"📄 {filename} ({file_size_mb:.2f} MB)")
+                self.file_info_label.configure(text=f"{filename} ({file_size_mb:.2f} MB)")
                 self.result_card.grid(row=5, column=0, padx=12, pady=6, sticky="ew")
 
-            messagebox.showinfo("Download Selesai 🎉", message)
+            messagebox.showinfo("Download Selesai", message)
         else:
             self.status_label.configure(text=f"Status: {message}", text_color=COLOR_DANGER)
             if "Dibatalkan" not in message:
